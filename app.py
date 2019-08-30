@@ -36,6 +36,9 @@ class MyApp(QWidget):
         self.lbl6 = QLabel("UserName", self)
         self.lbl6.move(30, 190)
 
+        self.lbl6 = QLabel("LikeCount", self)
+        self.lbl6.move(30, 220)
+
         self.qle1 = QLineEdit(self)
         self.qle1.move(100, 40)
 
@@ -56,9 +59,12 @@ class MyApp(QWidget):
         self.qle6 = QLineEdit(self)
         self.qle6.move(100, 190)
 
+        self.qle7 = QLineEdit(self)
+        self.qle7.move(100, 220)
+
         self.setWindowTitle("Instagram Auto Program")
         # x, y, width, height
-        self.setGeometry(800, 400, 300, 230)
+        self.setGeometry(800, 400, 300, 260)
         self.show()
 
         # 버튼에 기능을 할당하는 코드
@@ -104,9 +110,10 @@ class MyApp(QWidget):
         # hash_tags_count = 600
 
         important_hash_tags = [self.qle3.text(), self.qle4.text(), self.qle5.text()]
-        important_hash_tags_count = 200
+        important_hash_tags_count = int(self.qle7.text())
+        
         hash_tags = [self.qle3.text(), self.qle4.text(), self.qle5.text()]
-        hash_tags_count = 600
+        hash_tags_count = 500
 
         # ======== 3. InstaJob Class ======
         print("browser loading..")
@@ -138,6 +145,7 @@ class MyApp(QWidget):
 
         browser.get("https://instagram.com/")
 
+        time.sleep(3.5)
         # 로그인
         login_link = browser.find_element_by_css_selector(
             "p.izU2O"
@@ -153,24 +161,25 @@ class MyApp(QWidget):
         time.sleep(1)
         password_input.submit()
         time.sleep(2)
+        time.sleep(60)
 
         browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-        try:
-            for i in range(timeline_like_count):
-                time.sleep(1.5)
+        # try:
+        #     for i in range(timeline_like_count):
+        #         time.sleep(1.5)
 
-                browser.find_elements_by_css_selector(
-                    "span.fr66n > button > span"
-                    # "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
-                )[0].click()
+        #         browser.find_elements_by_css_selector(
+        #             "span.fr66n > button > span"
+        #             # "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
+        #         )[0].click()
 
-                time.sleep(1.5)
+        #         time.sleep(1.5)
 
-        except Exception as e:
-            print("Error! ", e)
-            # slacker.chat.post_message("#general", text="raise timeline like error")
-            pass
+        # except Exception as e:
+        #     print("Error! ", e)
+        #     # slacker.chat.post_message("#general", text="raise timeline like error")
+        #     pass
 
         for hash_tag in hash_tags:
             try:
@@ -187,6 +196,7 @@ class MyApp(QWidget):
                     count_number = hash_tags_count
 
                 for i in range(1, count_number):
+                    print(i,"/",count_number)
                     try:
                         # 좋아요 해쉬태그 지정
                         like = browser.find_element_by_css_selector(
@@ -197,14 +207,14 @@ class MyApp(QWidget):
                         like.click()
 
                         # 다음 포스팅으로 넘어가기전 대기
-                        time.sleep(2 + random.random() * 1.2)
+                        time.sleep(4 + random.random() * 1.2)
 
                         # 다음 포스팅으로 넘어감
                         browser.find_element_by_css_selector(
                             "span.glyphsSpriteHeart__outline__24__grey_9.Szr5J"
                         ).click()
 
-                        time.sleep(3.2 + random.random() * 1.3)
+                        time.sleep(4.2 + random.random() * 1.3)
                     except:
                         browser.find_element_by_css_selector(
                             "a.HBoOv.coreSpriteRightPaginationArrow"
